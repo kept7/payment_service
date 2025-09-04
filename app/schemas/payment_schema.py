@@ -12,7 +12,7 @@ class PaymentSchema(BaseModel):
     second_name: Optional[str] = Field(None, max_length=64)
 
     @field_validator("card_number", mode="before")
-    def must_be_four_digit_int_wrapper(cls, val) -> str:
+    def must_be_four_digit_int_wrapper(cls, val: int | str) -> str:
         return must_be_four_digit_int(val)
 
     @field_validator("last_name", "first_name", "second_name")

@@ -4,7 +4,7 @@ from typing import Optional, Literal
 SchemaName = Literal["Payment", "User"]
 
 
-def must_be_four_digit_int(val) -> str:
+def must_be_four_digit_int(val: int | str) -> str:
     s = str(val)
     if not isinstance(s, str) or not s.isdigit():
         raise ValueError("Incorrect Card Number")
