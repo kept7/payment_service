@@ -12,7 +12,7 @@ payment_status = Annotated[
     mapped_column(
         Enum("Создан", "Оплачен", "Отменён", "Завершён", name="payment_status_enum"),
         nullable=False,
-    )
+    ),
 ]
 
 

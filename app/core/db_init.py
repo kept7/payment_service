@@ -2,10 +2,14 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.models.user_model import Base
 
+from app.utils.config import settings
+
 
 class DB:
     def __init__(self, db_name: str):
-        self.engine = create_async_engine(f"postgresql+asyncpg:///{db_name}")
+        self.engine = create_async_engine(
+            f"postgresql+asyncpg://{settings.DB_USER_NAME}:{settings.DB_USER_PASS}@{settings.DB_HOST}/{db_name}"
+        )
         self.session = async_sessionmaker(self.engine, expire_on_commit=False)
 
     async def setup_database(self):
