@@ -3,3 +3,6 @@
 
 # venv
 task_venv
+
+# env file
+.env

@@ -8,7 +8,7 @@ from .validation_funcs import must_be_valid_name
 
 class UserSchema(BaseModel):
     user_email: EmailStr
-    user_password: str
+    user_password: str = Field(min_length=4)
 
 
 class UserRegSchema(UserSchema):
