@@ -37,19 +37,3 @@ class PaymentSchema(BaseModel):
                 raise ValueError('Field contains invalid characters')
 
         return val
-
-
-
-# try:
-#     PaymentSchema(card_number="1234")
-#     PaymentSchema(card_number=0)
-#     PaymentSchema(card_number="9999")
-#     PaymentSchema(card_number="0000")
-#     PaymentSchema(card_number=-1234)
-#     PaymentSchema(card_number=234)
-#     PaymentSchema(card_number="dasd")
-#     PaymentSchema(card_number="12313")
-#     PaymentSchema(card_number=12345)
-# except ValidationError as e:
-#     print(e)
-#
