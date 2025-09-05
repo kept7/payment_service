@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, HTTPException, Depends, Body
 
 from app.schemas.auth_schema import UserSchema, AuthSchema
@@ -8,6 +10,7 @@ from app.services.authorization_handler import get_current_user
 from app.utils.config import settings
 
 
+logger = logging.getLogger("app.auth")
 router = APIRouter(prefix="/auth")
 
 
@@ -17,14 +20,29 @@ router = APIRouter(prefix="/auth")
     summary="Добавить нового пользователя",
 )
 async def add_user(user_data: UserSchema):
+    logger.info("Registration attempt for %s", user_data.user_email)
     res = await db_auth.get(user_data.user_email)
     if res is not None:
+        logger.warning(
+            "Registration failed: user already exists %s", user_data.user_email
+        )
         raise HTTPException(status_code=409, detail="User already exist")
 
-    user_data.user_password = get_hash(user_data.user_password)
-    if await db_auth.create(user_data):
-        return {"ok": True, "msg": "User was created"}
-    raise HTTPException(status_code=400, detail="Failed to create user")
+    try:
+        user_data.user_password = get_hash(user_data.user_password)
+        created = await db_auth.create(user_data)
+        if created:
+            logger.info("User created: %s", user_data.user_email)
+            return {"ok": True, "msg": "User was created"}
+        logger.error(
+            "Failed to create user (db returned falsy) %s", user_data.user_email
+        )
+        raise HTTPException(status_code=400, detail="Failed to create user")
+    except Exception as e:
+        logger.exception(
+            "Exception during registration for %s: %s", user_data.user_email, e
+        )
+        raise HTTPException(status_code=400, detail="Failed to create user")
 
 
 @router.post(

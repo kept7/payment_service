@@ -1,6 +1,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+import sys
 
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -10,15 +11,19 @@ formatter = logging.Formatter(
     "%(asctime)s %(levelname)s [%(name)s] %(message)s", "%Y-%m-%d %H:%M:%S"
 )
 
-handler = RotatingFileHandler(
+file_handler = RotatingFileHandler(
     LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=5, encoding="utf-8"
 )
-handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
+console = logging.StreamHandler(stream=sys.stdout)
+console.setFormatter(formatter)
 
 root_logger = logging.getLogger()
 root_logger.setLevel(logging.INFO)
-root_logger.addHandler(handler)
 
-console = logging.StreamHandler()
-console.setFormatter(formatter)
-root_logger.addHandler(console)
+if not any(isinstance(h, logging.StreamHandler) for h in root_logger.handlers):
+    root_logger.addHandler(console)
+
+if not any(isinstance(h, RotatingFileHandler) for h in root_logger.handlers):
+    root_logger.addHandler(file_handler)
