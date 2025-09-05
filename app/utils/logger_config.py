@@ -1,9 +1,11 @@
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import sys
 
-LOG_DIR = "logs"
+from logging.handlers import RotatingFileHandler
+
+
+LOG_DIR = os.environ.get("APP_LOG_DIR", "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 LOG_FILE = os.path.join(LOG_DIR, "app.log")
 
@@ -14,6 +16,7 @@ formatter = logging.Formatter(
 file_handler = RotatingFileHandler(
     LOG_FILE, maxBytes=10 * 1024 * 1024, backupCount=5, encoding="utf-8"
 )
+file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 
 console = logging.StreamHandler(stream=sys.stdout)

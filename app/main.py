@@ -1,3 +1,5 @@
+import app.utils.logger_config
+
 import uvicorn
 
 from app.core.app import create_app

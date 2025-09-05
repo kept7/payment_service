@@ -8,7 +8,7 @@ task_venv
 .env
 
 # logs
-tests/app.*
+logs/app.log
 
 # cov
 .coverage
