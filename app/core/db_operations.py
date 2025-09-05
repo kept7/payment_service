@@ -6,8 +6,8 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from sqlalchemy.exc import IntegrityError
 
-from app.schemas.user_schema import UserSchema
-from app.models.user_model import AuthModel
+from app.schemas.auth_schema import UserSchema
+from app.models.auth_model import AuthModel
 
 
 R = TypeVar("R")

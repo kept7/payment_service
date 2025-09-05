@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from app.schemas.user_schema import UserSchema, AuthSchema
+from app.schemas.auth_schema import UserSchema, AuthSchema
 from app.core.db_sessions import db_auth
 
 from app.services.hash_handler import get_hash, is_hash_eq
@@ -16,6 +16,7 @@ router = APIRouter(prefix="/auth")
     summary="Получить данные всех пользователей",
 )
 async def get_users():
+    # здесь будет проверка jwt-токена на пользователя admin@admin.com
     res = await db_auth.get_all()
     if res is None:
         raise HTTPException(status_code=404, detail="Users doesn't exitst")

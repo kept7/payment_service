@@ -29,6 +29,7 @@ app.include_router(auth_router)
 
 @app.on_event("startup")
 async def on_startup():
+    await db.drop_database()
     await db.setup_database()
 
 
