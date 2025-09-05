@@ -12,14 +12,10 @@ from app.schemas.payment_schema import PaymentSchema
 
 
 class DBPaymentRepository(DBRepository):
-    async def create(
-            self,
-            payment_data: PaymentSchema
-    ) -> PaymentModel | None:
+    async def create(self, payment_data: PaymentSchema) -> PaymentModel | None:
         @self.connection
         async def inner_create(
-                inner_payment_data: PaymentSchema,
-                session: AsyncSession
+            inner_payment_data: PaymentSchema, session: AsyncSession
         ):
             new_payment = PaymentModel(
                 card_number=inner_payment_data.card_number,
@@ -44,14 +40,11 @@ class DBPaymentRepository(DBRepository):
 
         return await inner_create(payment_data)
 
-    async def get(
-            self,
-            payment_id: _uuid.UUID
-    ) -> PaymentModel | None:
+    async def get(self, payment_id: _uuid.UUID) -> PaymentModel | None:
         @self.connection
         async def inner_get(
-                inner_payment_id: _uuid.UUID,
-                session: AsyncSession,
+            inner_payment_id: _uuid.UUID,
+            session: AsyncSession,
         ):
             query = select(PaymentModel).filter_by(payment_id=inner_payment_id)
             res = await session.execute(query)
@@ -60,15 +53,15 @@ class DBPaymentRepository(DBRepository):
         return await inner_get(payment_id)
 
     async def update(
-            self,
-            payment_id: _uuid.UUID,
-            status: PaymentStatus,
+        self,
+        payment_id: _uuid.UUID,
+        status: PaymentStatus,
     ) -> None:
         @self.connection
         async def inner_update(
-                inner_payment_id: _uuid.UUID,
-                inner_status: PaymentStatus,
-                session: AsyncSession
+            inner_payment_id: _uuid.UUID,
+            inner_status: PaymentStatus,
+            session: AsyncSession,
         ):
             stmt = (
                 update(PaymentModel)
@@ -81,14 +74,11 @@ class DBPaymentRepository(DBRepository):
         return await inner_update(payment_id, status)
 
     async def delete(
-            self,
-            payment_id: _uuid.UUID,
+        self,
+        payment_id: _uuid.UUID,
     ) -> None:
         @self.connection
-        async def inner_delete(
-                inner_payment_id: _uuid.UUID,
-                session: AsyncSession
-        ):
+        async def inner_delete(inner_payment_id: _uuid.UUID, session: AsyncSession):
             stmt = delete(PaymentModel).filter_by(payment_id=inner_payment_id)
             await session.execute(stmt)
             await session.commit()
@@ -105,40 +95,34 @@ class DBPaymentRepository(DBRepository):
         return await inner_get_all()
 
     async def get_by_status(
-            self,
-            payment_id: _uuid.UUID,
-            status: PaymentStatus
+        self, payment_id: _uuid.UUID, status: PaymentStatus
     ) -> Sequence[PaymentModel]:
         @self.connection
         async def inner_get_by_status(
-                inner_payment_id: _uuid.UUID,
-                inner_status: PaymentStatus,
-                session: AsyncSession
+            inner_payment_id: _uuid.UUID,
+            inner_status: PaymentStatus,
+            session: AsyncSession,
         ):
             query = select(PaymentModel).filter_by(
-                payment_id=inner_payment_id,
-                status=inner_status
+                payment_id=inner_payment_id, status=inner_status
             )
             res = await session.execute(query)
             return res.scalars().one_or_none()
 
         return await inner_get_by_status(payment_id, status)
 
-
     async def get_by_amount(
-            self,
-            payment_id: _uuid.UUID,
-            amount: PaymentModel.amount
+        self, payment_id: _uuid.UUID, amount: PaymentModel.amount
     ) -> Sequence[PaymentModel]:
         @self.connection
         async def inner_get_by_amount(
-                inner_payment_id: _uuid.UUID,
-                inner_amount: PaymentModel.creation_time,
-                session: AsyncSession
+            inner_payment_id: _uuid.UUID,
+            inner_amount: PaymentModel.creation_time,
+            session: AsyncSession,
         ):
             query = select(PaymentModel).filter(
                 PaymentModel.payment_id == inner_payment_id,
-                PaymentModel.amount < inner_amount
+                PaymentModel.amount < inner_amount,
             )
             res = await session.execute(query)
             return res.scalars().one_or_none()
