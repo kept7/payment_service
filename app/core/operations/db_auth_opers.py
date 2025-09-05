@@ -1,14 +1,12 @@
 from typing import Sequence
 
-from pydantic import EmailStr
 from sqlalchemy import select, update, delete
-
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.auth_schema import UserSchema
 from app.models.auth_model import AuthModel
-from app.core.db_operations import DBRepository
+from app.core.operations.db_operations import DBRepository
 
 
 class DBAuthRepository(DBRepository):
@@ -42,9 +40,9 @@ class DBAuthRepository(DBRepository):
 
         return bool(await inner_create(user_data))
 
-    async def get(self, user_email: EmailStr) -> AuthModel | None:
+    async def get(self, user_email: AuthModel.user_email) -> AuthModel | None:
         @self.connection
-        async def inner_get(inner_user_email: EmailStr, session: AsyncSession):
+        async def inner_get(inner_user_email: AuthModel.user_email, session: AsyncSession):
             query = select(AuthModel).filter_by(user_email=inner_user_email)
             res = await session.execute(query)
             return res.scalars().one_or_none()
@@ -53,12 +51,12 @@ class DBAuthRepository(DBRepository):
 
     async def update(
         self,
-        user_email: EmailStr,
+        user_email: AuthModel.user_email,
         user_password_hash: str,
     ) -> None:
         @self.connection
         async def inner_update(
-            inner_user_email: EmailStr,
+            inner_user_email: AuthModel.user_email,
             inner_user_pass_hash: str,
             session: AsyncSession,
         ):
@@ -74,10 +72,10 @@ class DBAuthRepository(DBRepository):
 
     async def delete(
         self,
-        user_email: EmailStr,
+        user_email: AuthModel.user_email,
     ) -> None:
         @self.connection
-        async def inner_delete(inner_user_email: EmailStr, session: AsyncSession):
+        async def inner_delete(inner_user_email: AuthModel.user_email, session: AsyncSession):
             stmt = delete(AuthModel).filter_by(user_email=inner_user_email)
             await session.execute(stmt)
             await session.commit()

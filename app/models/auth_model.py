@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 
-from .init_model import Base, int_pk, str_32, str_64, email_str, hash_str
+from .init_model import Base, int_pk, str_32, str_64, email_str_unique, hash_str
 
 
 class AuthModel(Base):
@@ -9,5 +9,5 @@ class AuthModel(Base):
     id: Mapped[int_pk]
     first_name: Mapped[str_32]
     last_name: Mapped[str_64]
-    user_email: Mapped[email_str]
+    user_email: Mapped[email_str_unique]
     user_password_hash: Mapped[hash_str]

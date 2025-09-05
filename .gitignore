@@ -6,3 +6,6 @@ task_venv
 
 # env file
 .env
+
+# logs
+tests/*.log

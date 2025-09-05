@@ -1,4 +1,4 @@
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import Mapped
 
 from .init_model import (
     Base,

@@ -1,7 +1,7 @@
-from app.core.db_operations import DBRepository
+from app.core.operations.db_operations import DBRepository
 
 
-class DBPaymentRepository(DBRepository):
+class DBBalanceRepository(DBRepository):
     async def create(self): ...
 
     async def get(self): ...

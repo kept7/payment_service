@@ -4,9 +4,11 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.utils.logger_config import root_logger
 from app.utils.config import settings
 from app.core.db_sessions import db
 from app.routers.auth_router import router as auth_router
+from app.routers.payment_router import  router as payment_router
 
 app = FastAPI()
 
@@ -25,11 +27,12 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(payment_router)
 
 
 @app.on_event("startup")
 async def on_startup():
-    await db.drop_database()
+    # await db.drop_database()
     await db.setup_database()
 
 
