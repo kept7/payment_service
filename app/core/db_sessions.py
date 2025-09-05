@@ -9,5 +9,4 @@ db = DB(settings.DB_NAME)
 
 db_auth = DBAuthRepository(db.session)
 db_payment = DBPaymentRepository(db.session)
-db_balance = DBBalanceRepository(db.session)
 db_payment_user = DBPaymentUserRepository(db.session)
