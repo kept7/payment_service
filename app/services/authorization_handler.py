@@ -2,7 +2,7 @@ from typing import Dict, Any
 
 from fastapi import HTTPException, Request
 
-from app.core.db_sessions import db_auth
+from app.core.db.db_sessions import db_auth
 from app.services.jwt_handler import get_token_from_cookie, verify_jwt_token
 
 

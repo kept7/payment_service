@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
 
 from app.schemas.auth_schema import UserSchema, AuthSchema
-from app.core.db_sessions import db_auth
+from app.core.db.db_sessions import db_auth
 from app.services.hash_handler import get_hash, is_hash_eq
 from app.services.jwt_handler import create_access_token, set_cookies
 from app.services.authorization_handler import get_current_user
 from app.utils.config import settings
+
 
 router = APIRouter(prefix="/auth")
 

@@ -5,7 +5,7 @@ from sqlalchemy import select, update, delete
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.operations.db_operations import DBRepository
+from app.core.db.operations.db_operations import DBRepository
 from app.models.init_model import PaymentStatus
 from app.models.payment_model import PaymentModel
 from app.schemas.payment_schema import PaymentSchema

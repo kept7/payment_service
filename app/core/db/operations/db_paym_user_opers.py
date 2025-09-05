@@ -2,11 +2,11 @@ from typing import Sequence
 import uuid as _uuid
 
 from pydantic import EmailStr
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
-from app.core.operations.db_operations import DBRepository
+from app.core.db.operations.db_operations import DBRepository
 from app.models.payment_user_model import PaymentUserModel
 
 

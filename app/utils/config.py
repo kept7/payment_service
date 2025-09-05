@@ -2,6 +2,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    HOST: str
+    PORT: int
     DB_USER_NAME: str
     DB_USER_PASS: str
     DB_HOST: str

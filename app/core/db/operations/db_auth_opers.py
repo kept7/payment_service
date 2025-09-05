@@ -6,14 +6,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.auth_schema import UserSchema
 from app.models.auth_model import AuthModel
-from app.core.operations.db_operations import DBRepository
+from app.core.db.operations.db_operations import DBRepository
 
 
 class DBAuthRepository(DBRepository):
     async def create(
         self,
         user_data: UserSchema,
-    ) -> bool:
+    ) -> UserSchema:
         @self.connection
         async def inner_create(
             inner_user_data: UserSchema,
@@ -38,7 +38,7 @@ class DBAuthRepository(DBRepository):
                 await session.rollback()
                 raise
 
-        return bool(await inner_create(user_data))
+        return await inner_create(user_data)
 
     async def get(self, user_email: AuthModel.user_email) -> AuthModel | None:
         @self.connection

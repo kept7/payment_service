@@ -2,7 +2,7 @@ import uuid as _uuid
 
 from fastapi import APIRouter, HTTPException, Depends
 
-from app.core.db_sessions import db_payment, db_payment_user
+from app.core.db.db_sessions import db_payment, db_payment_user
 from app.schemas.payment_schema import PaymentSchema
 from app.models.init_model import PaymentStatus, dec
 from app.services.authorization_handler import get_current_user
