@@ -23,5 +23,4 @@ def test_is_hash_eq_invalid_types_raises():
 def test_is_hash_eq_mismatch_and_corrupt_hash_returns_false():
     h = get_hash("password123")
     assert is_hash_eq("wrong-password", h) is False
-    # corrupted hash returns False
     assert is_hash_eq("password123", h + "corrupt") is False

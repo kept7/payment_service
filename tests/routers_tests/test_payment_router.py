@@ -4,8 +4,7 @@ from httpx import AsyncClient, ASGITransport
 from fastapi import FastAPI, status
 from unittest.mock import AsyncMock, patch
 
-from app.routers.payment_router import router  # измените путь, если иначе
-from app.models.init_model import PaymentStatus
+from app.routers.payment_router import router
 
 app = FastAPI()
 app.include_router(router)
@@ -16,7 +15,7 @@ def fake_payment_obj():
     class P:
         def __init__(self, pid):
             self.payment_id = pid
-            self.status = "Создан"  # default
+            self.status = "Создан"
             self.amount = 1.23
 
     return P(uuid.uuid4())
@@ -50,7 +49,6 @@ async def test_create_payment_success(fake_payment_obj):
 
 @pytest.mark.asyncio
 async def test_create_payment_fail_create(payment_payload=None):
-    # db_payment.create -> None => 400
     mock_db_payment = AsyncMock()
     mock_db_payment.create.return_value = None
 
@@ -204,7 +202,6 @@ async def test_get_user_payments_some(fake_payment_obj):
         return_value=type("U", (), {"user_email": "user@example.com"})
     )
     mock_db_payment_user = AsyncMock()
-    # возвращаем список записей с payment_id атрибутом
     rec = type("R", (), {"payment_id": fake_payment_obj.payment_id})
     mock_db_payment_user.get_by_user.return_value = [rec]
 

@@ -42,7 +42,6 @@ async def create_payment(
             )
             return {"ok": True, "msg": "Payment was created"}
 
-        # rollback
         await db_payment.delete(res.payment_id)
         logger.error(
             "Failed to create payment-user relation for payment %s user %s; payment deleted",

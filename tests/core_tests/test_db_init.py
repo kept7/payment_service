@@ -6,7 +6,6 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_db_init_engine_and_session_created():
-    # Подмена модуля конфигурации до импорта app.core.db.db_init
     fake_settings = MagicMock(
         DB_USER_NAME="user1", DB_USER_PASS="pass1", DB_HOST="host1"
     )
@@ -15,7 +14,6 @@ async def test_db_init_engine_and_session_created():
     fake_cfg.settings = fake_settings
     sys.modules[cfg_module_name] = fake_cfg
 
-    # Теперь импортируем тестируемый модуль после подмены конфига
     with patch("app.core.db.db_init.create_async_engine") as mock_create_engine, patch(
         "app.core.db.db_init.async_sessionmaker"
     ) as mock_async_sessionmaker, patch("app.core.db.db_init.settings", fake_settings):
@@ -24,7 +22,7 @@ async def test_db_init_engine_and_session_created():
         mock_sessionmaker = MagicMock()
         mock_async_sessionmaker.return_value = mock_sessionmaker
 
-        from app.core.db.db_init import DB  # импорт после подмены
+        from app.core.db.db_init import DB
 
         db = DB("somedb")
 
@@ -41,7 +39,6 @@ async def test_db_init_engine_and_session_created():
 
 @pytest.mark.asyncio
 async def test_setup_and_drop_database_call_metadata():
-    # Подмена конфигурации и Base модуля до импорта db_init
     fake_settings = MagicMock(DB_USER_NAME="u", DB_USER_PASS="p", DB_HOST="h")
     cfg_module_name = "app.utils.config"
     fake_cfg = ModuleType(cfg_module_name)
@@ -55,8 +52,6 @@ async def test_setup_and_drop_database_call_metadata():
     fake_base_mod.Base = fake_base
     sys.modules[base_module_name] = fake_base_mod
 
-    # Патчим create_async_engine и async_sessionmaker внутри модуля db_init,
-    # и также подменяем settings внутри модуля db_init чтобы точно использовать fake_settings
     with patch("app.core.db.db_init.create_async_engine") as mock_create_engine, patch(
         "app.core.db.db_init.async_sessionmaker"
     ), patch("app.core.db.db_init.settings", fake_settings):
