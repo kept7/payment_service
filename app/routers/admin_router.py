@@ -12,7 +12,7 @@ router = APIRouter(prefix="/admin")
 
 
 @router.get(
-    "/admin/user_payment/all",
+    "/user_payment/all",
     tags=["Пользователь-платеж"],
     summary="Получить все записи пользователь-платёж (для суперпользователя)",
 )

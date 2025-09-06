@@ -94,7 +94,7 @@ async def get_payments(current_user=Depends(get_current_user)):
 
 
 @router.get(
-    "/id/{payment_id}",
+    "/{payment_id}",
     tags=["Платежи"],
     summary="Получить информацию о конкретном платеже",
 )
@@ -114,7 +114,7 @@ async def get_payment(payment_id: _uuid.UUID, current_user=Depends(get_current_u
 
 
 @router.get(
-    "/email/{user_email}/all",
+    "/user_email/all",
     tags=["Платежи"],
     summary="Получить все платежи пользователя",
 )
@@ -138,7 +138,7 @@ async def get_user_payments(current_user=Depends(get_current_user)):
 
 
 @router.get(
-    "/email/{user_email}/{status}",
+    "/user_email/status/{status}",
     tags=["Платежи"],
     summary="Получить все платежи пользователя с определённым статусом",
 )
@@ -169,7 +169,7 @@ async def get_user_payments_by_status(
 
 
 @router.get(
-    "/email/{amount}",
+    "/user_email/amount/{amount}",
     tags=["Платежи"],
     summary="Получить все платежи пользователя с определённой суммой платежа",
 )
