@@ -6,9 +6,9 @@ from app.utils.config import settings
 
 
 class DB:
-    def __init__(self, db_name: str):
+    def __init__(self):
         self.engine = create_async_engine(
-            f"postgresql+asyncpg://{settings.DB_USER_NAME}:{settings.DB_USER_PASS}@{settings.DB_HOST}/{db_name}"
+            f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
         )
         self.session = async_sessionmaker(self.engine, expire_on_commit=False)
 

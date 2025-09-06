@@ -23,13 +23,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@db:5432/${POSTGRES_DB:-appdb}"
+      DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@db:5432/${POSTGRES_DB:-appdb}"
     ports:
       - "8000:8000"
     restart: unless-stopped
-    env_file:
-      - .env
     volumes:
       - ./:/app
 
@@ -40,13 +40,13 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    entrypoint: ["sh", "-c"]
-    command: >
-      "alembic upgrade head"
-    environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER:-appuser}:${POSTGRES_PASSWORD:-apppassword}@db:5432/${POSTGRES_DB:-appdb}"
     env_file:
       - .env
+    volumes:
+      - ./:/app
+    entrypoint: [ "sh", "-c" ]
+    command: [ "python", "-m", "alembic", "upgrade", "head" ]
+    restart: "no"
 
 volumes:
   db_data:

@@ -4,10 +4,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     HOST: str
     PORT: int
-    DB_USER_NAME: str
-    DB_USER_PASS: str
-    DB_HOST: str
-    DB_NAME: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str = "db"
+    POSTGRES_PORT: int = 5432
+    POSTGRES_DB: str
     BASE_URL_1: str
     BASE_URL_2: str
     JWT_SECRET: str
